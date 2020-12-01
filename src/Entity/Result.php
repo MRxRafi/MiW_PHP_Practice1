@@ -104,6 +104,14 @@ class Result implements JsonSerializable
         return $this->id;
     }
 
+    public function setResult(int $result) {
+        $this->result = $result;
+    }
+
+    public function setUser(User $user) {
+        $this->user = $user;
+    }
+
     /**
      * Implements __toString()
      *
