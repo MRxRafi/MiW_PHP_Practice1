@@ -59,7 +59,27 @@ __MARCA_FIN;
 }
 
 function funcionCrearUsuario() {
-    echo 'Crear usuario funciona';
+    if (empty($_POST)){
+        echo <<< ___MARCA_FIN
+        <form method="post">
+            <fieldset>
+                <legend>Alta usuario</legend>
+                <label for="username">Inserte un nombre de usuario</label>
+                <input type="text" name="username" placeholder="Nombre de usuario">
+                <br>
+                <label for="email">Inserte un email</label>
+                <input type="email" name="email" placeholder="Email">
+                <br>
+                <label for="password">Inserte una contraseña</label>
+                <input type="password" name="password" placeholder="Contraseña">
+                <br>
+                <button type="submit">Enviar</button>
+            </fieldset>
+        </form>
+___MARCA_FIN;
+    } else {
+        // TODO Guardar en BBDD el usuario en caso de poderse
+    }
 }
 
 function funcionActualizarUsuario(string $name) {
@@ -89,7 +109,27 @@ __MARCA_FIN;
 }
 
 function funcionCrearResultado() {
-    echo 'Crear resultado funciona';
+    if (empty($_POST)){
+        echo <<< ___MARCA_FIN
+        <form method="post">
+            <fieldset>
+                <legend>Alta resultado</legend>
+                <label for="resultId">Inserte un id para el resultado: </label>
+                <input type="number" name="resultId" placeholder="ID resultado">
+                <br>
+                <label for="userId">Inserte el ID del usuario asociado: </label>
+                <input type="number" name="userId" placeholder="ID usuario">
+                <br>
+                <label for="fecha">Inserte una fecha (opcional): </label>
+                <input type="date" name="fecha" placeholder="Fecha">
+                <br>
+                <button type="submit">Enviar</button>
+            </fieldset>
+        </form>
+___MARCA_FIN;
+    } else {
+        // TODO Guardar en BBDD el resultado en caso de poderse
+    }
 }
 
 function funcionActualizarResultado(string $name) {
