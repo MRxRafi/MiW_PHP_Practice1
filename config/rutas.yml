@@ -11,6 +11,26 @@ ruta_user_list:
     methods:
       - GET
 
+ruta_result_list:
+    path:     /results
+    controller: 'funcionListadoResultados'
+    methods:
+        - GET
+
+ruta_create_user:
+    path:     /create/user
+    controller: 'funcionCrearUsuario'
+    methods:
+        - GET
+        - POST
+
+ruta_create_result:
+    path:     /create/result
+    controller: 'funcionCrearResultado'
+    methods:
+        - GET
+        - POST
+
 ruta_user:
     path:     /users/{name}
     controller: 'funcionUsuario'
@@ -19,3 +39,30 @@ ruta_user:
     methods:
         - GET
         - DELETE
+
+ruta_result:
+    path:     /results/{name}
+    controller: 'funcionResultado'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+        - DELETE
+
+ruta_update_user:
+    path:     /users/update/{name}
+    controller: 'funcionActualizarUsuario'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+        - PUT
+
+ruta_update_result:
+    path:     /result/update/{name}
+    controller: 'funcionActualizarResultado'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+        - PUT
