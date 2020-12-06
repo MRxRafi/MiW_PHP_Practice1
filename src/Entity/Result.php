@@ -112,6 +112,10 @@ class Result implements JsonSerializable
         $this->user = $user;
     }
 
+    public function setTime(DateTime $time) {
+        $this->time = $time;
+    }
+
     /**
      * Implements __toString()
      *

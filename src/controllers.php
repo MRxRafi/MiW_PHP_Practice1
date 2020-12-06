@@ -56,6 +56,7 @@ __MARCA_FIN;
         echo "<li>$user</li>" . PHP_EOL;
     }
     echo '</ul>';
+    echo '<br><a href="/">Volver a home</a>';
 }
 
 function funcionCrearUsuario() {
@@ -78,8 +79,26 @@ function funcionCrearUsuario() {
         </form>
 ___MARCA_FIN;
     } else {
-        // TODO Guardar en BBDD el usuario en caso de poderse
+        $entityManager = Utils::getEntityManager();
+        $userRepository = $entityManager->getRepository(User::class);
+
+        $userExists = $userRepository->findBy(['username' => $_POST['username']]);
+        if (sizeof($userExists) !== 0) {
+            echo '<p>El usuario ya existe en la BBDD</p>';
+        } else {
+            try {
+                $user = new User($_POST['username'], $_POST['email'], $_POST['password'], true);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                echo '<p>Usuario creado correctamente</p>';
+            } catch(Throwable $t) {
+                echo $t->getMessage();
+            }
+        }
     }
+    echo '<br><a href="/">Volver a home</a>';
 }
 
 function funcionActualizarUsuario(string $name) {
@@ -106,6 +125,7 @@ __MARCA_FIN;
         echo "<li>$result</li>" . PHP_EOL;
     }
     echo '</ul>';
+    echo '<br><a href="/">Volver a home</a>';
 }
 
 function funcionCrearResultado() {
@@ -128,8 +148,35 @@ function funcionCrearResultado() {
         </form>
 ___MARCA_FIN;
     } else {
-        // TODO Guardar en BBDD el resultado en caso de poderse
+        $entityManager = Utils::getEntityManager();
+        $resultRepository = $entityManager->getRepository(Result::class);
+
+        $resultExists = $resultRepository->findBy(['result' => $_POST['resultId']]);
+        if (sizeof($resultExists) !== 0) {
+            echo '<p>El resultado ya existe en la BBDD</p>';
+        } else {
+            try {
+                $userRepository = $entityManager->getRepository(User::class);
+
+                $user = $userRepository->find($_POST['userId']);
+                $date = $_POST['fecha'];
+                if ($date == null) {
+                    echo '<p>No se ha introducido una fecha válida, se usará la actual en su defecto.</p>' . PHP_EOL;
+                    $date = new DateTime('now');
+                } else {
+                    $date = new DateTime($_POST['fecha']);
+                }
+                $result = new Result($_POST['resultId'], $user, $date);
+                $entityManager->persist($result);
+                $entityManager->flush();
+
+                echo '<p>Resultado creado correctamente</p>';
+            } catch(Throwable $t) {
+                echo $t->getMessage();
+            }
+        }
     }
+    echo '<br><a href="/">Volver a home</a>';
 }
 
 function funcionActualizarResultado(string $name) {
