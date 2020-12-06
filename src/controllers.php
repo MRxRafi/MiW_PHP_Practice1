@@ -17,25 +17,13 @@ function funcionHomePage()
     global $routes;
 
     $rutaListadoUsers = $routes->get('ruta_user_list')->getPath();
-    $rutaCreateUser = $routes->get('ruta_create_user')->getPath();
-    $rutaUpdateUser = $routes->get('ruta_update_user')->getPath();
     $rutaListadoResults = $routes->get('ruta_result_list')->getPath();
-    $rutaCreateResult = $routes->get('ruta_create_result')->getPath();
-    $rutaUpdateResult = $routes->get('ruta_update_result')->getPath();
     echo <<< ____MARCA_FIN
     <h1>RUTAS</h1>
     <ul>
         <li><a href="$rutaListadoUsers">Listado Usuarios</a></li>
         <br>
-        <li><a href="$rutaCreateUser">Crear Usuario</a></li>
-        <br>
-        <li><a href="$rutaUpdateUser">Actualizar Usuario</a></li>
-        <br>
         <li><a href="$rutaListadoResults">Listado Resultados</a></li>
-        <br>
-        <li><a href="$rutaCreateResult">Crear Resultado</a></li>
-        <br>
-        <li><a href="$rutaUpdateResult">Actualizar Resultado</a></li>
         <br>
     </ul>
 ____MARCA_FIN;
@@ -43,6 +31,9 @@ ____MARCA_FIN;
 
 function funcionListadoUsuarios(): void
 {
+    global $routes;
+    $rutaCreateUser = $routes->get('ruta_create_user')->getPath();
+
     $entityManager = Utils::getEntityManager();
 
     $userRepository = $entityManager->getRepository(User::class);
@@ -50,12 +41,37 @@ function funcionListadoUsuarios(): void
 
     echo <<< __MARCA_FIN
         <h1>USUARIOS</h1>
-            <ul>
+            <table border="1px">
+                <thead>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Enabled</th>
+                </thead>
+                <tbody>
 __MARCA_FIN;
     foreach ($users as $user) {
-        echo "<li>$user</li>" . PHP_EOL;
+        $id = $user->getId();
+        $username = $user->getUsername();
+        $email = $user->getEmail();
+        $enabled = $user->isEnabled();
+        echo <<< ____MARCA_FIN
+            <tr>
+                <td>$id</td>
+                <td>$username</td>
+                <td>$email</td>
+                <td>$enabled</td>
+                <td>
+                    <a href="/users/$username">Borrar Usuario</a>
+                </td>
+                <td>
+                    <a href="/users/update/$username">Actualizar Resultado</a>
+                </td>
+            </tr>
+____MARCA_FIN;
     }
-    echo '</ul>';
+    echo '</tbody></table>';
+    echo "<br><a href=$rutaCreateUser>Crear Usuario</a><br>";
     echo '<br><a href="/">Volver a home</a>';
 }
 
@@ -107,11 +123,28 @@ function funcionActualizarUsuario(string $name) {
 
 function funcionUsuario(string $name)
 {
-    echo $name;
+    $entityManager = Utils::getEntityManager();
+    $userRepository = $entityManager->getRepository(User::class);
+    $userExists = $userRepository->findOneBy(['username' => $name]);
+
+    if($userExists != null) {
+        $entityManager->remove($userExists);
+        $entityManager->flush();
+
+        echo "<p>Usuario borrado: $name</p>" . PHP_EOL;
+        echo '<br><a href="/">Volver a home</a>';
+
+    } else {
+        echo "<p>El usuario $name no existe en la base de datos.</p>" . PHP_EOL;
+        echo '<br><a href="/">Volver a home</a>';
+    }
 }
 
 function funcionListadoResultados(): void
 {
+    global $routes;
+    $rutaCreateResult = $routes->get('ruta_create_result')->getPath();
+
     $entityManager = Utils::getEntityManager();
 
     $resultRepository = $entityManager->getRepository(Result::class);
@@ -119,12 +152,39 @@ function funcionListadoResultados(): void
 
     echo <<< __MARCA_FIN
         <h1>RESULTADOS</h1>
-            <ul>
+            <table border="1px">
+                <thead>
+                    <th>ID</th>
+                    <th>Result</th>
+                    <th>UserId</th>
+                    <th>Username</th>
+                </thead>
+                <tbody>
 __MARCA_FIN;
     foreach ($results as $result) {
-        echo "<li>$result</li>" . PHP_EOL;
+        $id = $result->getId();
+        $resultId = $result->getResult();
+        $user = $result->getUser();
+        $userId = $user->getId();
+        $username = $user->getUsername();
+        echo <<< ____MARCA_FIN
+            <tr>
+                <td>$id</td>
+                <td>$resultId</td>
+                <td>$userId</td>
+                <td>$username</td>
+                <td>
+                    <a href="/results/$resultId">Borrar Resultado</a>
+                </td>
+                <td>
+                    <a href="/result/update/$resultId">Actualizar Resultado</a>
+                </td>
+            </tr>
+            
+____MARCA_FIN;
     }
-    echo '</ul>';
+    echo '</tbody></table>';
+    echo "<br><a href=$rutaCreateResult>Crear Resultado</a><br>";
     echo '<br><a href="/">Volver a home</a>';
 }
 
@@ -183,4 +243,21 @@ function funcionActualizarResultado(string $name) {
     echo 'Actualizar resultado funciona ' . $name;
 }
 
+function funcionResultado(string $name) {
+    $entityManager = Utils::getEntityManager();
+    $resultRepository = $entityManager->getRepository(Result::class);
+    $resultExists = $resultRepository->findOneBy(['result' => $name]);
+
+    if($resultExists != null) {
+        $entityManager->remove($resultExists);
+        $entityManager->flush();
+
+        echo "<p>Resultado borrado: $name</p>" . PHP_EOL;
+        echo '<br><a href="/">Volver a home</a>';
+
+    } else {
+        echo "<p>El resultado $name no existe en la base de datos.</p>" . PHP_EOL;
+        echo '<br><a href="/">Volver a home</a>';
+    }
+}
 

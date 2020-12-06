@@ -31,23 +31,21 @@ ruta_create_result:
         - GET
         - POST
 
-ruta_user:
+ruta_delete_user:
     path:     /users/{name}
     controller: 'funcionUsuario'
     defaults:
         name: _default_
     methods:
         - GET
-        - DELETE
 
-ruta_result:
+ruta_delete_result:
     path:     /results/{name}
     controller: 'funcionResultado'
     defaults:
         name: _default_
     methods:
         - GET
-        - DELETE
 
 ruta_update_user:
     path:     /users/update/{name}
