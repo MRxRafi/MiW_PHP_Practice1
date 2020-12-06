@@ -18,7 +18,7 @@
 
         <!-- ###+ ResultsDoctrine -->
             <!-- env name="DATABASE_HOST" value="127.0.0.1"/ -->
-            <env name="DATABASE_NAME" value="miw_practica1"/>
+            <env name="DATABASE_NAME" value="miw_rafa"/>
             <!-- env name="DATABASE_PORT" value="3306"/ -->
             <env name="DATABASE_USER" value="root"/>      <!-- CHANGE!!! -->
             <env name="DATABASE_PASSWD" value=""/>  <!-- CHANGE!!! -->
@@ -26,7 +26,7 @@
             <!-- env name="DATABASE_CHARSET" value="UTF8"/ -->
 
             <!-- User ADMIN username/password -->
-            <env name="ADMIN_USER_NAME" value="miw_2020"/>              <!-- CHANGE!!! -->
+            <env name="ADMIN_USER_NAME" value="miw_rafa"/>              <!-- CHANGE!!! -->
             <env name="ADMIN_USER_EMAIL" value="${ADMIN_USER_NAME}@example.com"/>
             <env name="ADMIN_USER_PASSWD" value="miw_2020"/>          <!-- CHANGE!!! -->
 
