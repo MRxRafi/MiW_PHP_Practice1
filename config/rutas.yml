@@ -54,7 +54,7 @@ ruta_update_user:
         name: _default_
     methods:
         - GET
-        - PUT
+        - POST
 
 ruta_update_result:
     path:     /result/update/{name}
@@ -63,4 +63,4 @@ ruta_update_result:
         name: _default_
     methods:
         - GET
-        - PUT
+        - POST
